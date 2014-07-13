@@ -17,7 +17,7 @@
 
 (defroutes api-routes
   (GET "/demo/d3/sentou/all" []
-       (json-response {:all (sentou/all-sensi)}))
+       (json-response (sentou/all-sensi)))
   (route/resources "/")
   (route/not-found "Page not found"))
 
