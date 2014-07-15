@@ -1,0 +1,57 @@
+   svg {
+        font: 10px sans-serif;
+    }
+ 
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+  
+    .line-gokuu {
+        fill: none;
+        stroke: red;
+        stroke-width: 1.5px;
+    }
+    .line-pikkoro {
+        fill: none;
+        stroke: green;
+        stroke-width: 1.5px;
+    }
+    .line-vegeta {
+        fill: none;
+        stroke: yellow;
+        stroke-width: 1.5px;
+    }
+    .line-gohan {
+        fill: none;
+        stroke: blue;
+        stroke-width: 1.5px;
+    }
+    .line-kuririn {
+        fill: none;
+        stroke: orange;
+        stroke-width: 1.5px;
+    }
+    .line-freezer {
+        fill: none;
+        stroke: purple;
+        stroke-width: 1.5px;
+    }
+    .line-cell {
+        fill: none;
+        stroke: black;
+        stroke-width: 1.5px;
+    }
+    .line-buu {
+        fill: none;
+        stroke: pink;
+        stroke-width: 1.5px;
+    }
+
+    .brush .extent {
+        stroke: #fff;
+        fill-opacity: .125;
+        shape-rendering: crispEdges;
+    }

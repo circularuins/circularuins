@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <title>sentou</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="assets/css/sentou.css">
+  </head>
+  </html>
+  <body>
+    <h2>各戦士の戦闘力</h2>
+    出典：<a href="http://dragonballbp.web.fc2.com/">ドラゴンボール戦闘力＜超公式＞決定版</a>
+    <h5>
+      <br><font color="red">孫悟空</font>
+      <font color="blue">孫悟飯</font>
+      <font color="yellow">ベジータ</font>
+      <font color="green">ピッコロ</font>
+      <font color="orange">クリリン</font>
+      <br><font color="purple">フリーザ</font>
+      <font color="black">セル</font>
+      <font color="pink">ブウ</font>
+    </h5>
+
+    <script type="text/javascript">
+     /* var margin = {top: 20, right: 20, bottom: 30, left: 150},
+     width = 1500 - margin.left - margin.right,
+     height = 700 - margin.top - margin.bottom; */
+     var margin = {top: 10, right: 10, bottom: 100, left: 120},
+     margin2 = {top: 430, right: 10, bottom: 20, left: 120},
+     width = 1200 - margin.left - margin.right,
+     height = 500 - margin.top - margin.bottom,
+     height2 = 500 - margin2.top - margin2.bottom;
+ 
+     var parseDate = d3.time.format("%Y/%m/%d").parse;
+ 
+     // スケールと出力レンジの定義
+     var x = d3.time.scale().range([0, width]),
+     x2 = d3.time.scale().range([0, width]),
+     y = d3.scale.log().range([height, 0]),
+     y2 = d3.scale.log().range([height2, 0]);
+ 
+     // 軸の定義
+     var xAxis = d3.svg.axis().scale(x).orient("bottom"),
+        xAxis2 = d3.svg.axis().scale(x2).orient("bottom"),
+        yAxis = d3.svg.axis().scale(y).ticks(10, 0).orient("left");
+ 
+     // brushオブジェクトを作成
+     var brush = d3.svg.brush()
+        .x(x2)
+        .on("brush", brushed);
+
+     // 線の定義
+     var line = d3.svg.line()
+            .x(function(d) { return x(d.age); })
+            .y(function(d) { return y(d.power); });
+     var line2 = d3.svg.line()
+            .x(function(d) { return x2(d.age); })
+            .y(function(d) { return y2(d.power); });
+ 
+     // svgの定義
+     var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+     svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height);
+     var focus = svg.append("g")
+        .attr("class", "focus")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+     var context = svg.append("g")
+        .attr("class", "context")
+        .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
+ 
+     // データを読み込む
+     d3.json("/demo/d3/sentou/all", function(error, data) {
+       // データをフォーマット
+       for (sensi_name in data) {
+            data[sensi_name].forEach(function(d) {
+                d.age = parseDate(d.age);
+                d.power = +d.power;
+            });
+       };
+ 
+       // データを入力ドメインとして設定
+       // 同時にextentで目盛りの単位が適切になるようにする
+       x.domain(d3.extent(data.gokuu, function(d) { return d.age; }));
+       y.domain(d3.extent(data.gokuu, function(d) { return d.power; }));
+       x2.domain(x.domain());
+       y2.domain(y.domain());
+
+       // path要素をsvgに表示し、折れ線グラフを設定
+       for (sensi_name in data) {
+            var line_name = 'line-' + sensi_name;
+
+            focus.append("path")
+                .datum(data[sensi_name])
+                .attr("class", line_name)
+                .attr("d", line);
+
+            focus.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis)
+                .append("text")
+                .attr("x", 1060)
+                .attr("dx", ".71em")
+                .style("text-anchor", "end")
+                .text("エイジ");
+
+            focus.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("戦闘力");
+
+            context.append("path")
+                .datum(data[sensi_name])
+                .attr("class", line_name)
+                .attr("d", line2);
+
+            context.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height2 + ")")
+                .call(xAxis2);
+
+            context.append("g")
+                .attr("class", "x brush")
+                .call(brush)
+                .selectAll("rect")
+                .attr("y", -6)
+                .attr("height", height2 + 7);
+        };
+     });
+
+     function brushed() {
+       /* console.log( brush.extent()); */
+       x.domain(brush.empty() ? x2.domain() : brush.extent());
+       focus.selectAll("path").attr("d", line);
+       focus.selectAll(".x.axis").call(xAxis);
+     }
+    </script>
+  </body>
+</html>
