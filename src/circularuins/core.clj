@@ -19,6 +19,7 @@
   (GET "/demo/d3/sentou/all" []
        (json-response (sentou/all-sensi)))
   (route/resources "/")
+  (route/files "/demo/" {:root "demo"})
   (route/not-found "Page not found"))
 
 (defn wrap-dir-index

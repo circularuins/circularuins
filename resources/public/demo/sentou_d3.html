@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>sentou</title>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <link rel="stylesheet" type="text/css" href="assets/css/sentou.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/sentou.css">
   </head>
   </html>
   <body>
@@ -85,8 +85,8 @@
  
        // データを入力ドメインとして設定
        // 同時にextentで目盛りの単位が適切になるようにする
-       x.domain(d3.extent(data.gokuu, function(d) { return d.age; }));
-       y.domain(d3.extent(data.gokuu, function(d) { return d.power; }));
+       x.domain(d3.extent(data.vegeta, function(d) { return d.age; }));
+       y.domain(d3.extent(data.gohan, function(d) { return d.power; }));
        x2.domain(x.domain());
        y2.domain(y.domain());
 
