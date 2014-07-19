@@ -12,4 +12,5 @@
   :plugins [[lein-ring "0.8.11"]]
   :main circularuins.core
   :aot [circularuins.core]
-  :ring {:handler circularuins.core/app})
+  :ring {:handler circularuins.core/app}
+  :profiles {:dev {:dependencies [[ring-mock "0.1.5"]]}})
